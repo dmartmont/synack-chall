@@ -1,19 +1,14 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { CircularProgress, Container,MenuItem } from '@material-ui/core';
+import { CircularProgress, Container, Typography } from '@material-ui/core';
 
 import { fetchSearchResults } from './store/slices/search-result.slice';
+import { ENGINE_OPTIONS } from './constants/engines';
 
 import EngineSelect from './components/engine-select';
 import SearchBar from './components/search-bar';
 import ResultsList from './components/results-list';
 import useStyles from './App.styles';
-
-const ENGINE_OPTIONS = [
-  { value: 'google', text: 'Google' },
-  { value: 'bing', text: 'Bing' },
-  { value: 'both', text: 'Both' },
-]
 
 function App() {
   const styles = useStyles();
@@ -35,26 +30,25 @@ function App() {
     dispatch(fetchSearchResults(search, enginesToUse));
   }
 
-  const engineOptions = ENGINE_OPTIONS.map(({ value, text }) => (
-    <MenuItem key={value} value={value}>{text}</MenuItem>
-  ));
-
   return (
     <Container maxWidth="md">
+      <Typography variant="h3">
+        Google & Bing Search Aggregator
+      </Typography>
       <div className={styles.searchContainer}>
         <EngineSelect
           id="search-engines"
           label="Search Engine"
           onChange={handleEngineChange}
+          options={ENGINE_OPTIONS}
           value={engine}
-        >
-          {engineOptions}
-        </EngineSelect>
+        />
         <SearchBar
           className={styles.searchBar}
           value={search}
           onChange={handleSearchChange}
           onSubmit={handleSearchSubmit}
+          placeholder="Search term"
         />
       </div>
       <div className={styles.resultsContainer}>

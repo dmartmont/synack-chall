@@ -1,18 +1,19 @@
-import { Link, Typography  } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import { uniqueId } from 'lodash';
+import { Link, Typography  } from '@material-ui/core';
 
 import useStyles from './results-list.styles';
 
 function ResultsList({ results, ...rest }) {
   const styles = useStyles();
 
-  const resultItems = results.map(result => (
+  const resultItems = results.map(({ snippet, title, url, showUrl }) => (
     <li key={uniqueId()} className={styles.itemContainer}>
       <Typography variant="h6">
-        <Link href={result.url} target="_blank" rel="noopener">{result.title}</Link>
+        <Link href={url} target="_blank" rel="noopener">{title}</Link>
       </Typography>
-      <Typography variant="caption">{result.showUrl}</Typography>
-      <Typography variant="body2">{result.snippet}</Typography>
+      <Typography variant="caption">{showUrl}</Typography>
+      <Typography variant="body2">{snippet}</Typography>
     </li>
   ));
 
@@ -22,5 +23,13 @@ function ResultsList({ results, ...rest }) {
     </ul>
   )
 } 
+
+ResultsList.propTypes = {
+  results: PropTypes.array
+};
+
+ResultsList.defaultProps = {
+  results: []
+};
 
 export default ResultsList;

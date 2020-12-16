@@ -4,7 +4,7 @@ import { flatten } from 'lodash';
 import { googleSearch } from '../../services/google.api';
 import { bingSearch } from '../../services/bing.api';
 
-const INITIAL_STATE = {
+export const INITIAL_STATE = {
   results: [],
   isLoading: false,
   error: null
@@ -34,18 +34,20 @@ export const {
   getSearchFailure
 } = searchResultSlice.actions;
 
-const engineFunctionMapper = {
+export const engineFunctionMapper = {
   'google': googleSearch,
   'bing': bingSearch
 };
 
-export const fetchSearchResults = (searchTerm, engines) => async dispatch => {
+export const fetchSearchResults = (searchTerm, engines) => dispatch => {
   dispatch(getSearchStart());
   const searches = engines.map(async engine => {
     return await engineFunctionMapper[engine](searchTerm)
   });
-  Promise.all(searches).then(
+
+  return Promise.all(searches).then(
     res => {
+      console.log('Search result:', res);
       dispatch(getSearchSuccess(flatten(res)));
     },
     err => {

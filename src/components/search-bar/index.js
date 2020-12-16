@@ -1,12 +1,12 @@
+import PropTypes from 'prop-types';
 import { IconButton, InputAdornment, TextField, withStyles } from '@material-ui/core';
 import { Search as SearchIcon } from '@material-ui/icons';
 
 const styles = {};
 
-function SearchBar({ onChange, onSubmit, children, ...rest }) {
+function SearchBar({ onSubmit, ...rest }) {
   return (
     <TextField
-      onChange={onChange}
       variant="outlined"
       InputProps={{
         endAdornment: 
@@ -24,5 +24,15 @@ function SearchBar({ onChange, onSubmit, children, ...rest }) {
     />
   )
 } 
+
+SearchBar.propTypes = {
+  onSubmit: PropTypes.func
+};
+
+SearchBar.defaultProps = {
+  onSubmit: () => null
+};
+
+
 
 export default withStyles(styles)(SearchBar);
