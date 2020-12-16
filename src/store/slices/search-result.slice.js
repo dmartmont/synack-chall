@@ -35,19 +35,18 @@ export const {
 } = searchResultSlice.actions;
 
 export const engineFunctionMapper = {
-  'google': googleSearch,
-  'bing': bingSearch
+  google: googleSearch,
+  bing: bingSearch
 };
 
 export const fetchSearchResults = (searchTerm, engines) => dispatch => {
   dispatch(getSearchStart());
-  const searches = engines.map(async engine => {
-    return await engineFunctionMapper[engine](searchTerm)
+  const searches = engines.map(engine => {
+    return engineFunctionMapper[engine](searchTerm);
   });
 
   return Promise.all(searches).then(
     res => {
-      console.log('Search result:', res);
       dispatch(getSearchSuccess(flatten(res)));
     },
     err => {
